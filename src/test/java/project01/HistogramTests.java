@@ -1,4 +1,4 @@
-package de.vale.fsv.project01;
+package project01;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

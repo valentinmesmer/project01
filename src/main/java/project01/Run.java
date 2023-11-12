@@ -1,4 +1,4 @@
-package de.vale.fsv.project01;
+package project01;
 
 // If you don't like code like this, maybe you find Scala really nice :)
 public class Run<T> {

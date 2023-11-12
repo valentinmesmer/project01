@@ -1,4 +1,4 @@
-package de.vale.fsv.project01;
+package project01;
 
 import java.util.Arrays;
 import java.util.List;
