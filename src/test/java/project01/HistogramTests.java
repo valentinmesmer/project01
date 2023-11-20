@@ -72,9 +72,9 @@ public class HistogramTests {
     Assume.that(countOccurrences(value, data) > 0);
     Assertions.assertTrue(value >= histogram.min() && value <= histogram.max());
     /*
-        Bei einer großen Range von data werden extrem viele
+        Bei einer großen Range von data/value werden extrem viele
         Testfälle durch das assume that herausgefiltert was zu einer extrem niedrigen
-        Testabdeckung führen kann. jqwik lässt diese texts dann fehlschlagen.
+        Testabdeckung führen kann. jqwik lässt diese tests dann fehlschlagen.
 
     */
   }
