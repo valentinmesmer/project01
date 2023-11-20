@@ -8,8 +8,10 @@ import net.jqwik.api.Assume;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.IntRange;
+import net.jqwik.api.constraints.NotEmpty;
 import net.jqwik.api.constraints.Size;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class HistogramTests {
@@ -48,12 +50,12 @@ public class HistogramTests {
 
   @Property
   void histogramDoesNotCrash(
-      @ForAll @Size(min = 1) List<@IntRange(min = -100, max = 100) Integer> data) {
+      @ForAll @NotEmpty List<@IntRange(min = -100, max = 100) Integer> data) {
     new Histogram(data);
   }
 
   @Property
-  void histogramCount(@ForAll @Size(min = 1) List<@IntRange(min = -100, max = 100) Integer> data,
+  void histogramCount(@ForAll @NotEmpty List<@IntRange(min = -100, max = 100) Integer> data,
                       @ForAll @IntRange(min = -100, max = 100) int value) {
     Histogram histogram = new Histogram(data);
     int expectedCount = countOccurrences(value, data);
@@ -63,22 +65,38 @@ public class HistogramTests {
   }
 
   @Property
-  void histogramRange(
-      @ForAll @Size(min = 1) List<@IntRange(min = -100, max = 100) Integer> data
-  ) {
-    /*
-        Da das Histogram keinen durchgängigen Wertebereich abdecken muss kann es vorkommen, dass
-        value null mal in data vorkommt und aber trotzdem zwischen min und max liegt.
-        Unsere Lösung:
-        value wird zufällig aus den werten in data ausgewählt und dann geprüft, ob es zwischen min und max liegt.
-
-    */
-    int value = data.get(new Random().nextInt(data.size()));
-
+  @Disabled("Test soll beispielshaft fehlschlagen")
+  void histogramRangeBroken(@ForAll @NotEmpty List<@IntRange(min = -100000, max = 100000) Integer> data,
+                      @ForAll @IntRange(min = -100000, max = 100000) int value) {
     Histogram histogram = new Histogram(data);
     Assume.that(countOccurrences(value, data) > 0);
-
     Assertions.assertTrue(value >= histogram.min() && value <= histogram.max());
+    /*
+        Bei einer großen Range von data und einer kleinen range von value werden extrem viele
+        Testfälle durch das assume that herausgefiltert was zu einer extrem niedrigen
+        Testabdeckung führen kann. jqwik lässt diese texts dann fehlschlagen.
+
+    */
+  }
+
+  //Verbesserter Test
+  @Property
+  void histogramRange(
+      @ForAll @NotEmpty List<@IntRange(min = -100000, max = 100000) Integer> data
+  ) {
+    /*
+        Unsere Lösung: Anstatt mögliche Testfälle herauszufiltern können wir einfach über alle
+        tatsächlichen Werte in data interieren und für diese testen
+        ob sie zwischen min und max des Histogramms liegen.
+
+    */
+
+      Histogram histogram = new Histogram(data);
+      for(int value : data){
+        Assertions.assertTrue(value >= histogram.min() && value <= histogram.max());
+      }
 
   }
+
+
 }

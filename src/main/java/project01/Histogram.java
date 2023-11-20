@@ -12,17 +12,7 @@ public class Histogram {
     if (data == null || data.isEmpty()) {
       throw new IllegalArgumentException("data cannot be null or empty");
     }
-        /*
 
-        min = data.get(0);
-        max = data.get(0);
-
-        for (int value : data) {
-            if (value < min) min = value;
-            if (value > max) max = value;
-        }
-
-        */
     min = data.stream().min(Integer::compare).orElseThrow(IllegalArgumentException::new);
     max = data.stream().max(Integer::compare).orElseThrow(IllegalArgumentException::new);
 
