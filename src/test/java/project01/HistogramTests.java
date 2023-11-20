@@ -72,7 +72,7 @@ public class HistogramTests {
     Assume.that(countOccurrences(value, data) > 0);
     Assertions.assertTrue(value >= histogram.min() && value <= histogram.max());
     /*
-        Bei einer großen Range von data und einer kleinen range von value werden extrem viele
+        Bei einer großen Range von data werden extrem viele
         Testfälle durch das assume that herausgefiltert was zu einer extrem niedrigen
         Testabdeckung führen kann. jqwik lässt diese texts dann fehlschlagen.
 
@@ -87,7 +87,9 @@ public class HistogramTests {
     /*
         Unsere Lösung: Anstatt mögliche Testfälle herauszufiltern können wir einfach über alle
         tatsächlichen Werte in data interieren und für diese testen
-        ob sie zwischen min und max des Histogramms liegen.
+        ob sie zwischen min und max des Histogramms liegen. Bei einer extrem großen Range von data
+        sollte man nicht über alle Einträge iterieren, da dies zu einer extrem langen Laufzeit
+        führen kann. Dann kann man bespielsweise 1000 zufällige Einträge aus data prüfen.
 
     */
 
