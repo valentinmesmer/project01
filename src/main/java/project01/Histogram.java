@@ -40,10 +40,10 @@ public class Histogram {
   public int count(int value) {
     int index = value - min;
 
-      if (0 <= index && index < frequency.length) {
-          return frequency[index];
-      } else {
-          return 0;
-      }
+    if (0 <= index && index < frequency.length) {
+      return frequency[index];
+    } else {
+      return 0;
+    }
   }
 }

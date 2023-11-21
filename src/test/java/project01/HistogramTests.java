@@ -3,13 +3,11 @@ package project01;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
-import java.util.Random;
 import net.jqwik.api.Assume;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.IntRange;
 import net.jqwik.api.constraints.NotEmpty;
-import net.jqwik.api.constraints.Size;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -66,8 +64,9 @@ public class HistogramTests {
 
   @Property
   @Disabled("Test soll beispielshaft fehlschlagen")
-  void histogramRangeBroken(@ForAll @NotEmpty List<@IntRange(min = -100000, max = 100000) Integer> data,
-                      @ForAll @IntRange(min = -100000, max = 100000) int value) {
+  void histogramRangeBroken(
+      @ForAll @NotEmpty List<@IntRange(min = -100000, max = 100000) Integer> data,
+      @ForAll @IntRange(min = -100000, max = 100000) int value) {
     Histogram histogram = new Histogram(data);
     Assume.that(countOccurrences(value, data) > 0);
     Assertions.assertTrue(value >= histogram.min() && value <= histogram.max());
@@ -93,10 +92,10 @@ public class HistogramTests {
 
     */
 
-      Histogram histogram = new Histogram(data);
-      for(int value : data){
-        Assertions.assertTrue(value >= histogram.min() && value <= histogram.max());
-      }
+    Histogram histogram = new Histogram(data);
+    for (int value : data) {
+      Assertions.assertTrue(value >= histogram.min() && value <= histogram.max());
+    }
 
   }
 
